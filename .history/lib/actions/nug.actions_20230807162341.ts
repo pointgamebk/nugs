@@ -71,35 +71,10 @@ export async function fetchNugById(id: string) {
   connectToDB();
 
   try {
-    const nug = await Nug.findById(id)
-      .populate({
-        path: "author",
-        model: User,
-        select: "_id id name image",
-      })
-      .populate({
-        path: "children",
-        populate: [
-          {
-            path: "author",
-            model: User,
-            select: "_id id name parentId image",
-          },
-          {
-            path: "children",
-            model: Nug,
-            populate: {
-              path: "author",
-              model: User,
-              select: "_id id name parentId image",
-            },
-          },
-        ],
-      })
-      .exec();
-
-    return nug;
-  } catch (error: any) {
-    throw new Error(`Error fetching nug: ${error.message}`);
-  }
+    const nug = await Nug.findById(id).populate({
+      path: "author",
+      model: User,
+      select: "_id id name image",
+    });
+  } catch (error) {}
 }

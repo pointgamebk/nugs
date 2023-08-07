@@ -99,7 +99,5 @@ export async function fetchNugById(id: string) {
       .exec();
 
     return nug;
-  } catch (error: any) {
-    throw new Error(`Error fetching nug: ${error.message}`);
-  }
+  } catch (error) {}
 }
