@@ -46,23 +46,5 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     })
     .skip(skipAmount)
     .limit(pageSize)
-    .populate({ path: "author", model: User })
-    .populate({
-      path: "children",
-      populate: {
-        path: "author",
-        model: User,
-        select: "_id name parentId image",
-      },
-    });
-
-  const totalPostsCount = await Nug.countDocuments({
-    parentId: { $in: [null, undefined] },
-  });
-
-  const posts = await postsQuery.exec();
-
-  const isNext = totalPostsCount > skipAmount + posts.length;
-
-  return { posts, isNext };
+    .populate({ path: "author", model: "username" });
 }

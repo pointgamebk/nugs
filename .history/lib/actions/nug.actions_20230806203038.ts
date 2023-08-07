@@ -40,29 +40,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   const skipAmount = (pageNumber - 1) * pageSize;
 
   // Fetch the posts thathave no parents (top-level threads...)
-  const postsQuery = Nug.find({ parentId: { $in: [null, undefined] } })
-    .sort({
-      createdAt: "desc",
-    })
-    .skip(skipAmount)
-    .limit(pageSize)
-    .populate({ path: "author", model: User })
-    .populate({
-      path: "children",
-      populate: {
-        path: "author",
-        model: User,
-        select: "_id name parentId image",
-      },
-    });
-
-  const totalPostsCount = await Nug.countDocuments({
-    parentId: { $in: [null, undefined] },
-  });
-
-  const posts = await postsQuery.exec();
-
-  const isNext = totalPostsCount > skipAmount + posts.length;
-
-  return { posts, isNext };
+  const postsQuery = Nug.find({ parentId: { $in: [null, undefined] } }).sort({
+    createdAt: "desc",
+  }).skip;
 }

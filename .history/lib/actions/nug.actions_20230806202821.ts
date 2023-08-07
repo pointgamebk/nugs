@@ -36,33 +36,7 @@ export async function createNug({ text, author, communityId, path }: Params) {
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   connectToDB();
 
-  //Calculate the number of posts to skip
-  const skipAmount = (pageNumber - 1) * pageSize;
-
-  // Fetch the posts thathave no parents (top-level threads...)
-  const postsQuery = Nug.find({ parentId: { $in: [null, undefined] } })
-    .sort({
-      createdAt: "desc",
-    })
-    .skip(skipAmount)
-    .limit(pageSize)
-    .populate({ path: "author", model: User })
-    .populate({
-      path: "children",
-      populate: {
-        path: "author",
-        model: User,
-        select: "_id name parentId image",
-      },
-    });
-
-  const totalPostsCount = await Nug.countDocuments({
-    parentId: { $in: [null, undefined] },
+  const postsQuery = Nug.find({ parentId: { $in: [null, undefined] } }).sort({
+    createdAt: "desc",
   });
-
-  const posts = await postsQuery.exec();
-
-  const isNext = totalPostsCount > skipAmount + posts.length;
-
-  return { posts, isNext };
 }
