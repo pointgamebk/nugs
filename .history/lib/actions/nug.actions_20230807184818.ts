@@ -113,29 +113,5 @@ export async function addCommentToNug(
   connectToDB();
 
   try {
-    const originalNug = await Nug.findById(nugId);
-
-    if (!originalNug) {
-      throw new Error("Nug not found");
-    }
-
-    const commentNug = new Nug({
-      text: commentText,
-      author: userId,
-      parentId: nugId,
-    });
-
-    // Save the new nug ("thread")
-    const savedCommentNug = await commentNug.save();
-
-    // Update the original nug to include the new comment
-    originalNug.children.push(savedCommentNug._id);
-
-    // Save the original nug
-    await originalNug.save();
-
-    revalidatePath(path);
-  } catch (error: any) {
-    throw new Error(`Error adding comment to nug: ${error.message}`);
-  }
+  } catch (error) {}
 }

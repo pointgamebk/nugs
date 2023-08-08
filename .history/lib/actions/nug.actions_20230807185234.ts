@@ -124,17 +124,6 @@ export async function addCommentToNug(
       author: userId,
       parentId: nugId,
     });
-
-    // Save the new nug ("thread")
-    const savedCommentNug = await commentNug.save();
-
-    // Update the original nug to include the new comment
-    originalNug.children.push(savedCommentNug._id);
-
-    // Save the original nug
-    await originalNug.save();
-
-    revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Error adding comment to nug: ${error.message}`);
   }

@@ -35,26 +35,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <div className="mt-7">
         <Comment
           nugId={nug.id}
-          currentUserImg={userInfo.image}
+          currentUserImg={user.imageUrl}
           currentUserId={JSON.stringify(userInfo._id)}
         />
-      </div>
-
-      <div className="mt-10">
-        {nug.children.map((childItem: any) => (
-          <NugCard
-            key={childItem._id}
-            id={childItem._id}
-            currentUserId={childItem?.id || ""}
-            parentId={childItem.parentId}
-            content={childItem.text}
-            author={childItem.author}
-            community={childItem.community}
-            createdAt={childItem.createdAt}
-            comments={childItem.children}
-            isComment
-          />
-        ))}
       </div>
     </section>
   );
