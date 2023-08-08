@@ -1,10 +1,8 @@
-import NugsTab from "@/components/shared/NugsTab";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 
 async function Page({ params }: { params: { id: string } }) {
@@ -31,37 +29,12 @@ async function Page({ params }: { params: { id: string } }) {
         <Tabs defaultValue="nugs" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.value} className="tab">
-                <Image
-                  src={tab.icon}
-                  alt={tab.label}
-                  width={24}
-                  height={24}
-                  className="object-contain"
-                />
+              <TabsTrigger key={tab.label} value={tab.value}>
+                <Image />
                 <p className="max-sm:hidden">{tab.label}</p>
-
-                {tab.label === "Nugs" && (
-                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
-                    {userInfo?.nugs?.length}
-                  </p>
-                )}
               </TabsTrigger>
             ))}
           </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="full text-light-1"
-            >
-              <NugsTab
-                currentUserId={user.id}
-                accountId={userInfo.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))}
         </Tabs>
       </div>
     </section>

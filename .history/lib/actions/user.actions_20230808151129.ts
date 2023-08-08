@@ -72,9 +72,5 @@ export async function fetchUserPosts(userId: string) {
         },
       },
     });
-
-    return nugs;
-  } catch (error: any) {
-    throw new Error(`Failed to fetch user posts: ${error.message}`);
-  }
+  } catch (error) {}
 }

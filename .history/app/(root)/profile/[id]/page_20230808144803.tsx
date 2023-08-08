@@ -1,4 +1,3 @@
-import NugsTab from "@/components/shared/NugsTab";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
@@ -28,10 +27,10 @@ async function Page({ params }: { params: { id: string } }) {
       />
 
       <div className="mt-9">
-        <Tabs defaultValue="nugs" className="w-full">
+        <Tabs defaultValue="threads" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.value} className="tab">
+              <TabsTrigger key={tab.label} value={tab.value}>
                 <Image
                   src={tab.icon}
                   alt={tab.label}
@@ -40,28 +39,9 @@ async function Page({ params }: { params: { id: string } }) {
                   className="object-contain"
                 />
                 <p className="max-sm:hidden">{tab.label}</p>
-
-                {tab.label === "Nugs" && (
-                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
-                    {userInfo?.nugs?.length}
-                  </p>
-                )}
               </TabsTrigger>
             ))}
           </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent
-              key={`content-${tab.label}`}
-              value={tab.value}
-              className="full text-light-1"
-            >
-              <NugsTab
-                currentUserId={user.id}
-                accountId={userInfo.id}
-                accountType="User"
-              />
-            </TabsContent>
-          ))}
         </Tabs>
       </div>
     </section>

@@ -1,4 +1,3 @@
-import NugsTab from "@/components/shared/NugsTab";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
@@ -31,7 +30,7 @@ async function Page({ params }: { params: { id: string } }) {
         <Tabs defaultValue="nugs" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) => (
-              <TabsTrigger key={tab.label} value={tab.value} className="tab">
+              <TabsTrigger key={tab.label} value={tab.value}>
                 <Image
                   src={tab.icon}
                   alt={tab.label}
@@ -55,7 +54,7 @@ async function Page({ params }: { params: { id: string } }) {
               value={tab.value}
               className="full text-light-1"
             >
-              <NugsTab
+              <ThreadsTab
                 currentUserId={user.id}
                 accountId={userInfo.id}
                 accountType="User"
