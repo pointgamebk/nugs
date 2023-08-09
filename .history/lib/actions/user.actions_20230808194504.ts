@@ -126,6 +126,6 @@ export async function fetchUsers({
 
     return { users, isNext };
   } catch (error: any) {
-    throw new Error(`Failed to fetch users: ${error.message}`);
+    throw new Error(`Error fetching users: ${error.message}`);
   }
 }

@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 function LeftSidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const { userId } = useAuth();
+  const userId = useAuth();
   return (
     <section className="custom-scrollbar leftsidebar">
       <div className="flex w-full flex-1 flex-col gap-6 px-6">

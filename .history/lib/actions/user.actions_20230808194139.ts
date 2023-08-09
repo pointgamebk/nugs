@@ -119,13 +119,5 @@ export async function fetchUsers({
       .limit(pageSize);
 
     const totalUsersCount = await User.countDocuments(query);
-
-    const users = await usersQuery.exec();
-
-    const isNext = totalUsersCount > skipAmount + users.length;
-
-    return { users, isNext };
-  } catch (error: any) {
-    throw new Error(`Failed to fetch users: ${error.message}`);
-  }
+  } catch (error) {}
 }

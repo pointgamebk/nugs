@@ -104,13 +104,6 @@ export async function fetchUsers({
       id: { $ne: userId },
     };
 
-    if (searchString.trim() !== "") {
-      query.$or = [
-        { username: { $regex: regex } },
-        { name: { $regex: regex } },
-      ];
-    }
-
     const sortOptions = { createdAt: sortBy };
 
     const usersQuery = User.find(query)
@@ -118,14 +111,11 @@ export async function fetchUsers({
       .skip(skipAmount)
       .limit(pageSize);
 
-    const totalUsersCount = await User.countDocuments(query);
-
-    const users = await usersQuery.exec();
-
-    const isNext = totalUsersCount > skipAmount + users.length;
-
-    return { users, isNext };
-  } catch (error: any) {
-    throw new Error(`Failed to fetch users: ${error.message}`);
-  }
+    if (searchString.trim() !== "") {
+      query.$or = [
+        { username: { $regex: regex } },
+        { name: { $regex: regex } },
+      ];
+    }
+  } catch (error) {}
 }
