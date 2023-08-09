@@ -67,22 +67,15 @@ export async function fetchUserPosts(userId: string) {
     const nugs = await User.findOne({ id: userId }).populate({
       path: "nugs",
       model: Nug,
-      populate: [
-        {
-          path: "community",
-          model: Community,
-          select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
+      populate: {
+        path: "children",
+        model: Nug,
+        populate: {
+          path: "author",
+          model: User,
+          select: "name image id",
         },
-        {
-          path: "children",
-          model: Nug,
-          populate: {
-            path: "author",
-            model: User,
-            select: "name image id", // Select the "name" and "_id" fields from the "User" model
-          },
-        },
-      ],
+      },
     });
 
     return nugs;

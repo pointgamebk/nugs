@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NugValidation } from "@/lib/validations/nug";
 import { useOrganization } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
+import { createUploadthing } from "uploadthing/server";
 import { createNug } from "@/lib/actions/nug.actions";
 
 // import { updateUser } from "@/lib/actions/user.actions";
@@ -24,7 +25,6 @@ import { createNug } from "@/lib/actions/nug.actions";
 function PostNug({ userId }: { userId: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { organization } = useOrganization();
 
   const form = useForm({
     resolver: zodResolver(NugValidation),
@@ -38,7 +38,7 @@ function PostNug({ userId }: { userId: string }) {
     await createNug({
       text: values.nug,
       author: userId,
-      communityId: organization ? organization.id : null,
+      communityId: null,
       path: pathname,
     });
 

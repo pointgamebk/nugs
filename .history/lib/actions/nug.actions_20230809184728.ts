@@ -95,11 +95,6 @@ export async function fetchNugById(id: string) {
         select: "_id id name image",
       })
       .populate({
-        path: "community",
-        model: Community,
-        select: "_id id name image",
-      }) // Populate the community field with _id and name
-      .populate({
         path: "children",
         populate: [
           {

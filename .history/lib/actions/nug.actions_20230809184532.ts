@@ -55,28 +55,16 @@ export async function createNug({ text, author, communityId, path }: Params) {
   try {
     connectToDB();
 
-    const communityIdObject = await Community.findOne(
-      { id: communityId },
-      { _id: 1 }
-    );
-
     const createdNug = await Nug.create({
       text,
       author,
-      community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
+      community: communityId,
     });
 
     //Update user model
     await User.findByIdAndUpdate(author, {
       $push: { nugs: createdNug._id },
     });
-
-    if (communityIdObject) {
-      // Update Community model
-      await Community.findByIdAndUpdate(communityIdObject, {
-        $push: { threads: createdNug._id },
-      });
-    }
 
     revalidatePath(path);
   } catch (error: any) {
@@ -94,11 +82,6 @@ export async function fetchNugById(id: string) {
         model: User,
         select: "_id id name image",
       })
-      .populate({
-        path: "community",
-        model: Community,
-        select: "_id id name image",
-      }) // Populate the community field with _id and name
       .populate({
         path: "children",
         populate: [

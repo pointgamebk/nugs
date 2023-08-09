@@ -51,10 +51,7 @@ export async function fetchUser(userId: string) {
   try {
     connectToDB();
 
-    return await User.findOne({ id: userId }).populate({
-      path: "communities",
-      model: Community,
-    });
+    return await User.findOne({ id: userId });
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
   }
@@ -67,22 +64,15 @@ export async function fetchUserPosts(userId: string) {
     const nugs = await User.findOne({ id: userId }).populate({
       path: "nugs",
       model: Nug,
-      populate: [
-        {
-          path: "community",
-          model: Community,
-          select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
+      populate: {
+        path: "children",
+        model: Nug,
+        populate: {
+          path: "author",
+          model: User,
+          select: "name image id",
         },
-        {
-          path: "children",
-          model: Nug,
-          populate: {
-            path: "author",
-            model: User,
-            select: "name image id", // Select the "name" and "_id" fields from the "User" model
-          },
-        },
-      ],
+      },
     });
 
     return nugs;

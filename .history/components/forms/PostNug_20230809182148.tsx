@@ -38,7 +38,7 @@ function PostNug({ userId }: { userId: string }) {
     await createNug({
       text: values.nug,
       author: userId,
-      communityId: organization ? organization.id : null,
+      communityId: null,
       path: pathname,
     });
 

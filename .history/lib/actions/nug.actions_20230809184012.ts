@@ -2,15 +2,35 @@
 
 import User from "../models/user.model";
 import Nug from "../models/nug.model";
-import Community from "../models/community.model";
 import { connectToDB } from "../mongoose";
 import { revalidatePath } from "next/cache";
 
 interface Params {
   text: string;
   author: string;
-  communityId: string | null;
+  communityId: string;
   path: string;
+}
+
+export async function createNug({ text, author, communityId, path }: Params) {
+  try {
+    connectToDB();
+
+    const createdNug = await Nug.create({
+      text,
+      author,
+      community: communityId,
+    });
+
+    //Update user model
+    await User.findByIdAndUpdate(author, {
+      $push: { nugs: createdNug._id },
+    });
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error creating nug: ${error.message}`);
+  }
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
@@ -27,10 +47,6 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     .skip(skipAmount)
     .limit(pageSize)
     .populate({ path: "author", model: User })
-    .populate({
-      path: "community",
-      model: Community,
-    })
     .populate({
       path: "children",
       populate: {
@@ -51,39 +67,6 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   return { posts, isNext };
 }
 
-export async function createNug({ text, author, communityId, path }: Params) {
-  try {
-    connectToDB();
-
-    const communityIdObject = await Community.findOne(
-      { id: communityId },
-      { _id: 1 }
-    );
-
-    const createdNug = await Nug.create({
-      text,
-      author,
-      community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
-    });
-
-    //Update user model
-    await User.findByIdAndUpdate(author, {
-      $push: { nugs: createdNug._id },
-    });
-
-    if (communityIdObject) {
-      // Update Community model
-      await Community.findByIdAndUpdate(communityIdObject, {
-        $push: { threads: createdNug._id },
-      });
-    }
-
-    revalidatePath(path);
-  } catch (error: any) {
-    throw new Error(`Error creating nug: ${error.message}`);
-  }
-}
-
 export async function fetchNugById(id: string) {
   connectToDB();
 
@@ -94,11 +77,6 @@ export async function fetchNugById(id: string) {
         model: User,
         select: "_id id name image",
       })
-      .populate({
-        path: "community",
-        model: Community,
-        select: "_id id name image",
-      }) // Populate the community field with _id and name
       .populate({
         path: "children",
         populate: [

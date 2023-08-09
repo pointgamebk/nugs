@@ -35,12 +35,21 @@ function PostNug({ userId }: { userId: string }) {
   });
 
   const onSubmit = async (values: z.infer<typeof NugValidation>) => {
-    await createNug({
-      text: values.nug,
-      author: userId,
-      communityId: organization ? organization.id : null,
-      path: pathname,
-    });
+    if (!organization) {
+      await createNug({
+        text: values.nug,
+        author: userId,
+        communityId: null,
+        path: pathname,
+      });
+    } else {
+      await createNug({
+        text: values.nug,
+        author: userId,
+        communityId: null,
+        path: pathname,
+      });
+    }
 
     router.push("/");
   };
