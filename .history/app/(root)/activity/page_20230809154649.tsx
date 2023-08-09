@@ -30,10 +30,8 @@ async function Page() {
                     className="rounded-full object-cover"
                   />
                   <p className="!text-small-regular text-light-1">
-                    <span className="mr-1 text-primary-500">
-                      {activity.author.name}
-                    </span>{" "}
-                    replied to your nug
+                    <span className="mr-1">{activity.author.name}</span> replied
+                    to your nug
                   </p>
                 </article>
               </Link>

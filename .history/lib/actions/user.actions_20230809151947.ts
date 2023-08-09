@@ -130,27 +130,8 @@ export async function fetchUsers({
   }
 }
 
-export async function getActivity(userId: string) {
+export async function getActivity({ userId: string }) {
   try {
     connectToDB();
-
-    const userNugs = await Nug.find({ author: userId });
-
-    const childNugIds = userNugs.reduce((acc, userNug) => {
-      return acc.concat(userNug.children);
-    }, []);
-
-    const replies = await Nug.find({
-      _id: { $in: childNugIds },
-      author: { $ne: userId },
-    }).populate({
-      path: "author",
-      model: User,
-      select: "name image _id",
-    });
-
-    return replies;
-  } catch (error: any) {
-    throw new Error(`Failed to fetch activity: ${error.message}`);
-  }
+  } catch (error) {}
 }

@@ -24,23 +24,12 @@ async function Page() {
                 <article className="activity-card">
                   <Image
                     src={activity.author.image}
-                    alt="Profile picture"
-                    width={20}
-                    height={20}
-                    className="rounded-full object-cover"
-                  />
-                  <p className="!text-small-regular text-light-1">
-                    <span className="mr-1 text-primary-500">
-                      {activity.author.name}
-                    </span>{" "}
-                    replied to your nug
-                  </p>
                 </article>
               </Link>
             ))}
           </>
         ) : (
-          <p className="!text-base-lighter text-light-3">No activity yet</p>
+          <p>No activity yet</p>
         )}
       </section>
     </section>

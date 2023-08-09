@@ -138,7 +138,7 @@ export async function getActivity(userId: string) {
 
     const childNugIds = userNugs.reduce((acc, userNug) => {
       return acc.concat(userNug.children);
-    }, []);
+    });
 
     const replies = await Nug.find({
       _id: { $in: childNugIds },
