@@ -1,5 +1,6 @@
 import UserCard from "@/components/cards/UserCard";
 import NugsTab from "@/components/shared/NugsTab";
+import NugCard from "@/components/cards/NugCard";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { communityTabs } from "@/constants";
@@ -15,7 +16,7 @@ async function Page({ params }: { params: { id: string } }) {
   if (!user) return null;
 
   const communityDetails = await fetchCommunityDetails(params.id);
-  console.log({ communityDetails });
+  //console.log({ communityDetails });
 
   return (
     <section>

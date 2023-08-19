@@ -60,6 +60,10 @@ export async function fetchCommunityDetails(id: string) {
         model: User,
         select: "name username image _id id",
       },
+      {
+        path: "nugs",
+        model: Nug,
+      },
     ]);
 
     return communityDetails;
